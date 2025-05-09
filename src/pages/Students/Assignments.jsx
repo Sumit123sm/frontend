@@ -22,7 +22,7 @@ const StudentAssignments = () => {
 
   const fetchAssignments = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/v1/assignments/getall');
+      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/assignments/getall');
       setAssignments(response.data.assignments);
     } catch (error) {
       console.error('Error fetching assignments:', error);
