@@ -22,7 +22,7 @@ const AnnouncementSection = () => {
 
   const fetchAnnouncements = async () => {
     try {
-      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/announcements/getall');
+      const response = await axios.get('http://localhost:4000/api/v1/announcements/getall');
       setAnnouncements(response.data.announcements);
     } catch (error) {
       console.error('Error fetching announcements:', error);

@@ -26,7 +26,7 @@ const Assignments = () => {
 
   const fetchAssignments = async () => {
     try {
-      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/assignments/getall');
+      const response = await axios.get('http://localhost:4000/api/v1/assignments/getall');
       console.log('API Response:', response.data);
       
       if (response.data?.assignments && Array.isArray(response.data.assignments)) {
@@ -50,7 +50,7 @@ const Assignments = () => {
     }
 
     try {
-      const response = await axios.post('https://backend-1u3j.onrender.com/api/v1/assignments', newAssignment);
+      const response = await axios.post('http://localhost:4000/api/v1/assignments', newAssignment);
       toast.success('Assignment added successfully');
 
       // ✅ Fetch updated assignments list instead of manually adding the new one

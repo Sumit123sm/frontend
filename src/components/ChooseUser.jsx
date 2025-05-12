@@ -1,23 +1,42 @@
-// ChooseUser.js
 import React from 'react';
-import { ChooseUserContainer, UserSection, Title, Button } from '../styles/ChooseUserStyles'; // Import styles
-import { Link } from 'react-router-dom';
+import {
+  ChooseUserContainer,
+  UserCard,
+  Title,
+  RoleDescription,
+  ButtonContainer,
+  RoleButton
+} from '../styles/ChooseUserStyles1';
+import { useNavigate } from 'react-router-dom';
 
 const ChooseUser = () => {
+  const navigate = useNavigate();
+
   return (
     <ChooseUserContainer>
-      <UserSection>
+      <UserCard>
         <Title>Admin</Title>
-        <Button to="/admin-signIn">Login as Admin</Button>
-      </UserSection>
-      <UserSection>
+        <RoleDescription>Manage system settings, users, and monitor activity.</RoleDescription>
+        <ButtonContainer>
+          <RoleButton onClick={() => navigate('/admin-signIn')}>Login as Admin</RoleButton>
+        </ButtonContainer>
+      </UserCard>
+
+      <UserCard>
         <Title>Student</Title>
-        <Button to="/student-signIn">Login as Student</Button>
-      </UserSection>
-      <UserSection>
+        <RoleDescription>Access courses, grades, attendance, and announcements.</RoleDescription>
+        <ButtonContainer>
+          <RoleButton onClick={() => navigate('/student-signIn')}>Login as Student</RoleButton>
+        </ButtonContainer>
+      </UserCard>
+
+      <UserCard>
         <Title>Teacher</Title>
-        <Button to="/teacher-signIn">Login as Teacher</Button>
-      </UserSection>
+        <RoleDescription>Manage class schedules, student grades, and reports.</RoleDescription>
+        <ButtonContainer>
+          <RoleButton onClick={() => navigate('/teacher-signIn')}>Login as Teacher</RoleButton>
+        </ButtonContainer>
+      </UserCard>
     </ChooseUserContainer>
   );
 };
