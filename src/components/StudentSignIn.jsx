@@ -14,7 +14,7 @@ const StudentSignIn = () => {
     console.log('Sign-in data:', { email, password }); // Debugging line
 
     try {
-      const response = await axios.post('http://localhost:4000/api/student/signup', { email, password });
+      const response = await axios.post('https://backend-1u3j.onrender.com/api/student/signup', { email, password });
       console.log('Response:', response); // Debugging line
       
       if (response.status === 200) {
