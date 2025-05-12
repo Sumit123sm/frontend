@@ -92,7 +92,7 @@ const Home = () => {
             <SocialIconLink href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
               <FaTwitter size={24} />
             </SocialIconLink>
-            <SocialIconLink href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
+            <SocialIconLink href="https://www.linkedin.com/in/sumit-prasad-811736264/" target="_blank" rel="noopener noreferrer">
               <FaLinkedin size={24} />
             </SocialIconLink>
           </SocialIcons>
