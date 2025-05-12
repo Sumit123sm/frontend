@@ -24,7 +24,7 @@ const Attendance = () => {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/students/getall');
+      const response = await axios.get('http://localhost:4000/api/v1/students/getall');
       if (response.data?.students && Array.isArray(response.data.students)) {
         setStudents(response.data.students);
         initializeAttendanceData(response.data.students);
@@ -63,7 +63,7 @@ const Attendance = () => {
 
       console.log('Submitting Attendance Data:', attendanceData);
 
-      const response = await axios.post('https://backend-1u3j.onrender.com/api/v1/attendance', {
+      const response = await axios.post('http://localhost:4000/api/v1/attendance', {
         attendanceRecords: attendanceData,
       });
 

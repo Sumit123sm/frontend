@@ -22,7 +22,7 @@ const EventCalendar = () => {
   // Function to fetch events from the backend
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/events/getall');
+      const response = await axios.get('http://localhost:4000/api/v1/events/getall');
       // console.log(response);
       
       setEvents(response.data.event || []);
@@ -40,11 +40,11 @@ const EventCalendar = () => {
   const addEvent = async (e) => {
     e.preventDefault();
     try {
-      // const response = await axios.post('https://backend-1u3j.onrender.com/api/v1/events', {
+      // const response = await axios.post('http://localhost:4000/api/v1/events', {
       //   event: newEvent,
       // });
       // console.log(response);
-      const response = await fetch('https://backend-1u3j.onrender.com/api/v1/events', {
+      const response = await fetch('http://localhost:4000/api/v1/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -22,7 +22,7 @@ const LibrarySection = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/library/getall');
+      const response = await axios.get('http://localhost:4000/api/v1/library/getall');
       setBooks(response.data.books);
     } catch (error) {
       console.error('Error fetching books:', error);

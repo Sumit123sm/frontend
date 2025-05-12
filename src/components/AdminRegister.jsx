@@ -11,7 +11,7 @@ const AdminRegister = () => {
     
 
     try {
-      const response = await axios.post('https://backend-1u3j.onrender.com/api/admin/signup', { email, password });
+      const response = await axios.post('http://localhost:4000/api/admin/signup', { email, password });
       if (response.status === 200) {
         window.location.href = '/admin-signIn';
       } else {
