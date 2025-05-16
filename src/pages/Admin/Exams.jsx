@@ -26,7 +26,7 @@ const Exam = () => {
 
   const fetchExams = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/v1/exams/getall');
+      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/exams/getall');
       console.log(response);
       
       if (Array.isArray(response.data.exams)) {
@@ -43,7 +43,7 @@ const Exam = () => {
     e.preventDefault();
     const newExam = { name, registrationNumber, className, marks: parseInt(marks) };
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/exams', newExam);
+      const response = await axios.post('https://backend-1u3j.onrender.com/api/v1/exams', newExam);
       // Ensure response data is always an object
       if (typeof response.data === 'object') {
         setExamData([...examData, response.data]);

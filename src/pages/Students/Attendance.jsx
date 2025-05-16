@@ -17,7 +17,7 @@ const AttendanceSection = () => {
 
   const fetchAttendanceData = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/v1/attendance/getall');
+      const response = await axios.get('https://backend-1u3j.onrender.com/api/v1/attendance/getall');
       console.log('API Response:', response.data);
 
       if (Array.isArray(response.data.attendance)) {
