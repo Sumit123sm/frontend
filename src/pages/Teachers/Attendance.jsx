@@ -1,7 +1,6 @@
-// CheckAttendanceSection.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Sidebar from './Sidebar';
+import axios from 'axios';
 import {
   AttendanceContainer,
   Content,
@@ -12,10 +11,10 @@ import {
   StudentName,
   CheckboxLabel,
   Divider,
-  SubmitButton
+  SubmitButton,
 } from '../../styles/AttendanceStyles';
 
-const CheckAttendanceSection = () => {
+const Attendance = () => {
   const [students, setStudents] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
 
@@ -26,8 +25,13 @@ const CheckAttendanceSection = () => {
   const fetchStudents = async () => {
     try {
       const response = await axios.get('http://localhost:4000/api/v1/students/getall');
-      setStudents(response.data.students);
-      initializeAttendanceData(response.data.students);
+      if (response.data?.students && Array.isArray(response.data.students)) {
+        setStudents(response.data.students);
+        initializeAttendanceData(response.data.students);
+      } else {
+        console.warn('Invalid students data format:', response.data);
+        setStudents([]);
+      }
     } catch (error) {
       console.error('Error fetching students:', error);
     }
@@ -35,36 +39,37 @@ const CheckAttendanceSection = () => {
 
   const initializeAttendanceData = (students) => {
     const initialAttendanceData = students.map((student) => ({
-      id: student.id || student._id, // in case backend uses _id
+      studentId: student._id,
       name: student.name,
-      status: 'Present',
+      status: 'Present', // Default status
     }));
     setAttendanceData(initialAttendanceData);
   };
 
-  const handleStatusChange = (id, status) => {
-    const updatedData = attendanceData.map((student) => {
-      if (student.id === id) {
-        return { ...student, status };
-      }
-      return student;
-    });
-    setAttendanceData(updatedData);
+  const handleStatusChange = (studentId, status) => {
+    setAttendanceData((prevData) =>
+      prevData.map((student) =>
+        student.studentId === studentId ? { ...student, status } : student
+      )
+    );
   };
 
   const handleSubmit = async () => {
     try {
-      const formattedData = attendanceData.map(({ id, name, status }) => ({
-        studentId: id,
-        name,
-        status
-      }));
+      if (attendanceData.length === 0) {
+        console.warn('No attendance data to submit');
+        return;
+      }
+
+      console.log('Submitting Attendance Data:', attendanceData);
+
       const response = await axios.post('http://localhost:4000/api/v1/attendance', {
-        attendanceData: formattedData
+        attendanceRecords: attendanceData,
       });
-      console.log('Attendance data submitted:', response.data);
+
+      console.log('Attendance submitted successfully:', response.data);
     } catch (error) {
-      console.error('Error submitting attendance data:', error);
+      console.error('Error submitting attendance data:', error.response?.data || error.message);
     }
   };
 
@@ -76,33 +81,33 @@ const CheckAttendanceSection = () => {
           <AttendanceHeader>Attendance</AttendanceHeader>
           <AttendanceList>
             {students.map((student, index) => (
-              <React.Fragment key={student.id || student._id}>
+              <React.Fragment key={student._id}>
                 <AttendanceItem>
                   <StudentName>{student.name}</StudentName>
                   <CheckboxLabel>
                     <input
                       type="radio"
-                      name={`status-${student.id || student._id}`}
+                      name={`status-${student._id}`}
                       checked={attendanceData[index]?.status === 'Present'}
-                      onChange={() => handleStatusChange(student.id || student._id, 'Present')}
+                      onChange={() => handleStatusChange(student._id, 'Present')}
                     />
                     Present
                   </CheckboxLabel>
                   <CheckboxLabel>
                     <input
                       type="radio"
-                      name={`status-${student.id || student._id}`}
+                      name={`status-${student._id}`}
                       checked={attendanceData[index]?.status === 'Absent'}
-                      onChange={() => handleStatusChange(student.id || student._id, 'Absent')}
+                      onChange={() => handleStatusChange(student._id, 'Absent')}
                     />
                     Absent
                   </CheckboxLabel>
                   <CheckboxLabel>
                     <input
                       type="radio"
-                      name={`status-${student.id || student._id}`}
+                      name={`status-${student._id}`}
                       checked={attendanceData[index]?.status === 'Absent with apology'}
-                      onChange={() => handleStatusChange(student.id || student._id, 'Absent with apology')}
+                      onChange={() => handleStatusChange(student._id, 'Absent with apology')}
                     />
                     Absent with apology
                   </CheckboxLabel>
@@ -118,4 +123,4 @@ const CheckAttendanceSection = () => {
   );
 };
 
-export default CheckAttendanceSection;
+export default Attendance;

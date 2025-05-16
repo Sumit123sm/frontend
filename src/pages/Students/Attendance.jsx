@@ -1,19 +1,35 @@
-// AttendanceSection.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
-import { AttendanceContainer, SidebarContainer, Content, AttendanceHeader, AttendanceList, AttendanceItem, 
-  AttendanceDate, AttendanceStatus } 
-  from '../../styles/AttendanceStyles'; 
+import axios from 'axios';
+import {
+  AttendanceContainer,
+  SidebarContainer,
+  Content,
+  AttendanceHeader
+} from '../../styles/AttendanceStyles';
 
 const AttendanceSection = () => {
-  // Sample attendance data
-  const attendance = [
-    { id: 1, date: '2024-05-01', present: true },
-    { id: 2, date: '2024-05-02', present: false },
-    { id: 3, date: '2024-05-03', present: true },
-    { id: 4, date: '2024-05-04', present: true },
-    { id: 5, date: '2024-05-05', present: true }
-  ];
+  const [attendanceData, setAttendanceData] = useState([]);
+
+  useEffect(() => {
+    fetchAttendanceData();
+  }, []);
+
+  const fetchAttendanceData = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/api/v1/attendance/getall');
+      console.log('API Response:', response.data);
+
+      if (Array.isArray(response.data.attendance)) {
+        setAttendanceData(response.data.attendance);
+      } else {
+        console.warn('Invalid attendance format:', response.data);
+        setAttendanceData([]);
+      }
+    } catch (error) {
+      console.error('Error fetching attendance data:', error.response ? error.response.data : error.message);
+    }
+  };
 
   return (
     <AttendanceContainer>
@@ -22,14 +38,24 @@ const AttendanceSection = () => {
       </SidebarContainer>
       <Content>
         <AttendanceHeader>Attendance</AttendanceHeader>
-        <AttendanceList>
-          {attendance.map(({ id, date, present }) => (
-            <AttendanceItem key={id}>
-              <AttendanceDate>{date}</AttendanceDate>
-              <AttendanceStatus present={present}>{present ? 'Present' : 'Absent'}</AttendanceStatus>
-            </AttendanceItem>
-          ))}
-        </AttendanceList>
+        <table style={{ width: '70%', borderCollapse: 'collapse', marginTop: '20px' }}>
+          <thead>
+            <tr style={{ backgroundColor: '#f0f0f0' }}>
+              <th style={{ padding: '10px', border: '1px solid #ccc' }}>Sr.No</th>
+              <th style={{ padding: '10px', border: '1px solid #ccc' }}>Student Name</th>
+              <th style={{ padding: '10px', border: '1px solid #ccc' }}>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {attendanceData.map(({ _id, name, status }, index) => (
+              <tr key={_id || index}>
+                <td style={{ padding: '10px', border: '1px solid #ccc' }}>{index + 1}</td>
+                <td style={{ padding: '10px', border: '1px solid #ccc' }}>{name || 'Unknown Name'}</td>
+                <td style={{ padding: '10px', border: '1px solid #ccc' }}>{status || 'N/A'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </Content>
     </AttendanceContainer>
   );
